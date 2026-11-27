@@ -1,0 +1,81 @@
+
+<section class="panel">
+
+  <header class="panel-header">
+
+    <div>
+      <h1>Panel de pedidos</h1>
+
+      <p>
+        Usuario: {{ auth.usuario()?.nombre }}
+        — Rol: {{ auth.usuario()?.rol }}
+      </p>
+    </div>
+
+    <button type="button" (click)="salir()">
+      Cerrar sesión
+    </button>
+
+  </header>
+
+  <button type="button" (click)="cargar()">
+    Actualizar pedidos
+  </button>
+
+  @if (cargando()) {
+    <p>Cargando pedidos...</p>
+  }
+
+  @if (mensaje()) {
+    <p class="mensaje">{{ mensaje() }}</p>
+  }
+
+  <section class="pedidos">
+
+    @for (pedido of pedidos(); track pedido.id) {
+
+      <article class="pedido">
+
+        <h2>Pedido #{{ pedido.id }}</h2>
+
+        <p>Mesa: {{ pedido.mesaId }}</p>
+
+        <p>
+          Fecha:
+          {{ pedido.fecha | date:'short' }}
+        </p>
+
+        <p class="estado">
+          Estado: {{ pedido.estado }}
+        </p>
+
+        <h3>Detalles</h3>
+
+        @for (detalle of pedido.detalles; track $index) {
+          <p>
+            {{ detalle.plato }} × {{ detalle.cantidad }}
+          </p>
+        }
+
+        @if (accion(pedido.estado); as texto) {
+          <button
+            type="button"
+            (click)="avanzar(pedido)"
+          >
+            {{ texto }}
+          </button>
+        }
+
+      </article>
+
+    } @empty {
+
+      @if (!cargando()) {
+        <p>No hay pedidos activos.</p>
+      }
+
+    }
+
+  </section>
+
+</section>

@@ -1,0 +1,98 @@
+
+<section class="admin-platos">
+
+  <h1>Administrar platos</h1>
+
+  <form (ngSubmit)="guardar()">
+
+    <h2>
+      @if (id) {
+        Actualizar plato
+      } @else {
+        Nuevo plato
+      }
+    </h2>
+
+    <label for="nombre">Nombre</label>
+    <input
+      id="nombre"
+      name="nombre"
+      [(ngModel)]="nombre"
+      required
+    />
+
+    <label for="descripcion">Descripción</label>
+    <textarea
+      id="descripcion"
+      name="descripcion"
+      [(ngModel)]="descripcion"
+    ></textarea>
+
+    <label for="precio">Precio</label>
+    <input
+      id="precio"
+      name="precio"
+      type="number"
+      min="0.01"
+      step="0.01"
+      [(ngModel)]="precio"
+      required
+    />
+
+    <label for="categoria">ID de categoría</label>
+    <input
+      id="categoria"
+      name="categoriaId"
+      type="number"
+      min="1"
+      [(ngModel)]="categoriaId"
+      required
+    />
+
+    <button type="submit">
+      Guardar
+    </button>
+
+    <button type="button" (click)="limpiar()">
+      Cancelar
+    </button>
+
+  </form>
+
+  @if (mensaje()) {
+    <p>{{ mensaje() }}</p>
+  }
+
+  <h2>Platos registrados</h2>
+
+  @for (plato of platos(); track plato.id) {
+
+    <article class="plato">
+
+      <div>
+        <h3>{{ plato.nombre }}</h3>
+        <p>{{ plato.descripcion }}</p>
+        <strong>{{ plato.precio | currency:'USD' }}</strong>
+      </div>
+
+      <button
+        type="button"
+        (click)="editar(plato)"
+      >
+        Editar
+      </button>
+
+      <button
+        type="button"
+        (click)="eliminar(plato.id)"
+      >
+        Retirar
+      </button>
+
+    </article>
+
+  } @empty {
+    <p>No hay platos registrados.</p>
+  }
+
+</section>

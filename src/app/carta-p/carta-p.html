@@ -1,0 +1,23 @@
+<h1>Menú del restaurante</h1>
+
+<section class="menu">
+
+  @for (p of platos(); track p.id) {
+
+    <article class="plato">
+
+      <h2>{{ p.nombre }}</h2>
+
+      <p>{{ p.descripcion }}</p>
+
+      <b>{{ p.precio | currency }}</b>
+
+    </article>
+
+  } @empty {
+
+    <p>Cargando el menú…</p>
+
+  }
+
+</section>

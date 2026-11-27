@@ -1,0 +1,20 @@
+<h1>Categorias de nuestros platos</h1>
+
+<section class="tabla">
+
+  @for (c of categorias(); track c.id) {
+
+    <article class="categorias">
+
+      <h2>{{ c.nombre }}</h2>
+
+
+    </article>
+
+  } @empty {
+
+    <p>Cargando las categorias…</p>
+
+  }
+
+</section>

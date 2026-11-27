@@ -1,0 +1,87 @@
+
+<section class="menu-cliente">
+
+  <header>
+    <h1>Menú del restaurante</h1>
+
+    @if (mesaId(); as mesa) {
+      <p class="mesa">Mesa {{ mesa }}</p>
+    } @else {
+      <p class="mensaje">
+        No se identificó la mesa. Ingrese desde el QR.
+      </p>
+    }
+  </header>
+
+  <section class="platos">
+
+    @for (plato of platos(); track plato.id) {
+
+      <article class="plato">
+
+        <h2>{{ plato.nombre }}</h2>
+
+        <p>{{ plato.descripcion }}</p>
+
+        <strong>{{ plato.precio | currency:'USD' }}</strong>
+
+        <button
+          type="button"
+          (click)="agregar(plato)"
+        >
+          Agregar
+        </button>
+
+        @if (cantidad(plato.id) > 0) {
+          <p>En carrito: {{ cantidad(plato.id) }}</p>
+
+          <button
+            type="button"
+            (click)="quitar(plato.id)"
+          >
+            Quitar uno
+          </button>
+        }
+
+      </article>
+
+    } @empty {
+      <p>Cargando menú...</p>
+    }
+
+  </section>
+
+  <section class="carrito">
+
+    <h2>Mi pedido</h2>
+
+    @for (item of carrito(); track item.plato.id) {
+      <p>
+        {{ item.plato.nombre }} × {{ item.cantidad }}
+        — {{ item.plato.precio * item.cantidad | currency:'USD' }}
+      </p>
+    } @empty {
+      <p>Tu carrito está vacío.</p>
+    }
+
+    <h3>Total: {{ total() | currency:'USD' }}</h3>
+
+    <button
+      type="button"
+      (click)="enviarPedido()"
+      [disabled]="cargando() || !mesaId() || carrito().length === 0"
+    >
+      @if (cargando()) {
+        Enviando...
+      } @else {
+        Enviar pedido
+      }
+    </button>
+
+  </section>
+
+  @if (mensaje()) {
+    <p class="mensaje">{{ mensaje() }}</p>
+  }
+
+</section>

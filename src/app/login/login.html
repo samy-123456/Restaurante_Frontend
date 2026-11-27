@@ -1,0 +1,44 @@
+
+<section class="login">
+
+  <h1>Iniciar sesión</h1>
+
+  <form (ngSubmit)="ingresar()">
+
+    <label for="correo">Correo electrónico</label>
+
+    <input
+      id="correo"
+      type="email"
+      name="correo"
+      [(ngModel)]="correo"
+      required
+      placeholder="Ingrese su correo"
+    />
+
+    <label for="contraseña">Contraseña</label>
+
+    <input
+      id="contraseña"
+      type="password"
+      name="contraseña"
+      [(ngModel)]="contraseña"
+      required
+      placeholder="Ingrese su contraseña"
+    />
+
+    @if (mensaje()) {
+      <p class="mensaje">{{ mensaje() }}</p>
+    }
+
+    <button type="submit" [disabled]="cargando()">
+      @if (cargando()) {
+        Ingresando...
+      } @else {
+        Ingresar
+      }
+    </button>
+
+  </form>
+
+</section>

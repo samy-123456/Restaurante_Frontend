@@ -1,0 +1,110 @@
+
+<section class="reporte">
+
+  <header class="encabezado">
+    <div>
+      <h1>Reporte del día</h1>
+      <p>Resumen de ventas y pedidos del restaurante</p>
+    </div>
+
+    <div class="filtro">
+      <label for="fecha">Fecha del reporte</label>
+
+      <input
+        id="fecha"
+        type="date"
+        [(ngModel)]="fecha"
+        (change)="cargar()"
+      />
+    </div>
+  </header>
+
+  @if (cargando()) {
+    <p>Cargando reporte...</p>
+  }
+
+  @if (mensaje()) {
+    <p class="mensaje">{{ mensaje() }}</p>
+  }
+
+  @if (reporte(); as r) {
+
+    <section class="tarjetas">
+
+      <article class="tarjeta">
+        <h2>Total vendido</h2>
+        <p>{{ r.totalVendido | currency:'USD' }}</p>
+      </article>
+
+      <article class="tarjeta">
+        <h2>Pedidos</h2>
+        <p>{{ r.totalPedidos }}</p>
+      </article>
+
+      <article class="tarjeta">
+        <h2>Ticket promedio</h2>
+        <p>{{ r.ticketPromedio | currency:'USD' }}</p>
+      </article>
+
+    </section>
+
+    <section class="seccion">
+      <h2>Top 5 platos más vendidos</h2>
+
+      @if (r.topPlatos.length > 0) {
+
+        <table>
+          <thead>
+            <tr>
+              <th>Plato</th>
+              <th>Cantidad</th>
+              <th>Total vendido</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (plato of r.topPlatos; track plato.plato) {
+              <tr>
+                <td>{{ plato.plato }}</td>
+                <td>{{ plato.cantidad }}</td>
+                <td>{{ plato.total | currency:'USD' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+
+      } @else {
+        <p>No hay platos vendidos en esta fecha.</p>
+      }
+    </section>
+
+    <section class="seccion">
+      <h2>Pedidos por estado</h2>
+
+      @for (estado of r.porEstado; track estado.estado) {
+
+        <article class="estado">
+
+          <div class="estado-info">
+            <span>{{ estado.estado }}</span>
+            <strong>{{ estado.cantidad }}</strong>
+          </div>
+
+          <div class="barra">
+            <div
+              class="barra-valor"
+              [style.width.%]="porcentaje(estado.cantidad)"
+            ></div>
+          </div>
+
+        </article>
+
+      } @empty {
+        <p>No hay pedidos registrados.</p>
+      }
+
+    </section>
+
+  }
+
+</section>
